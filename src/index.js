@@ -91,12 +91,15 @@ class RBSheet extends Component {
       closeOnPressMask,
       closeOnPressBack,
       children,
-      customStyles
+      customStyles,
+      enableKeyboard,
     } = this.props;
     const { animatedHeight, pan, modalVisible } = this.state;
     const panStyle = {
       transform: pan.getTranslateTransform()
     };
+
+
 
     return (
       <Modal
@@ -109,7 +112,7 @@ class RBSheet extends Component {
         }}
       >
         <KeyboardAvoidingView
-          enabled={Platform.OS === "ios"}
+          enabled={enableKeyboard !== false && Platform.OS === "ios"}
           behavior="padding"
           style={[styles.wrapper, customStyles.wrapper]}
         >
@@ -136,7 +139,9 @@ class RBSheet extends Component {
 }
 
 RBSheet.propTypes = {
+  key: PropTypes.string,
   animationType: PropTypes.oneOf(["none", "slide", "fade"]),
+  enableKeyboard: PropTypes.bool,
   height: PropTypes.number,
   minClosingHeight: PropTypes.number,
   duration: PropTypes.number,
@@ -149,10 +154,12 @@ RBSheet.propTypes = {
 };
 
 RBSheet.defaultProps = {
+  key: undefined,
   animationType: "none",
   height: 260,
   minClosingHeight: 0,
   duration: 300,
+  enableKeyboard: true,
   closeOnDragDown: false,
   closeOnPressMask: true,
   closeOnPressBack: true,
